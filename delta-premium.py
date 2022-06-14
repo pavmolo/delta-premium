@@ -23,4 +23,4 @@ service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
 
 resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
 df = pd.DataFrame(resp['values'], header=1)
-st.write(df)
+st.write(resp['values'])
