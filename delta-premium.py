@@ -21,5 +21,6 @@ SAMPLE_RANGE_NAME = 'sector_margin'
 
 service = build('sheets', 'v4', credentials=credentials).spreadsheets()
 resp = service.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
-df = pd.DataFrame(resp)
+values = resp.get('values', [])
+df = pd.DataFrame(values)
 st.write(df)
