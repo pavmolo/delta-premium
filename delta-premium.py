@@ -29,15 +29,17 @@ df_growth_rate = df_maker('growth_rate',['growth_state', 'growth_rate'])
 df_deltas_breakdown = df_maker('deltas_breakdown',['answer', 'question_score'])
 df_answer_score = df_maker('answer_score',['answer_id', 'answer', 'answer_score'])
 
-st.write(df_sector_margin.info)
-st.write(df_growth_rate.info)
-st.write(df_deltas_breakdown.info)
-st.write(df_answer_score.info)
+st.write(df_sector_margin)
+st.write(df_growth_rate)
+st.write(df_deltas_breakdown)
+st.write(df_answer_score)
 
 df_growth_rate.set_index('growth_state', inplace=True)
 df_sector_margin.set_index('sector', inplace=True)
 df_deltas_breakdown.set_index('answer', inplace=True)
 df_answer_score.set_index('answer_id', inplace=True)
+
+
 
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
