@@ -34,11 +34,6 @@ df_sector_margin.set_index('sector', inplace=True)
 df_deltas_breakdown.set_index('answer', inplace=True)
 df_answer_score.set_index('answer_id', inplace=True)
 
-st.write(df_sector_margin)
-st.write(df_growth_rate)
-st.write(df_deltas_breakdown)
-st.write(df_answer_score)
-
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
 df_deltas_breakdown = pd.Series(df_deltas_breakdown['question_score'])
@@ -46,6 +41,10 @@ df_deltas_breakdown = pd.Series(df_deltas_breakdown['question_score'])
 gro_state_list = df_growth_rate.index
 industry_list = df_sector_margin.index
 answers_list = df_answer_score['answer']
+st.write(gro_state_list)
+st.write(industry_list)
+st.write(answers_list)
+st.write(df_answer_score)
 
 # Функция прибыли
 def lost_profit(ind, mar, rev, marg, gro):
