@@ -24,7 +24,7 @@ def df_maker(sheet, columns):
   df = pd.DataFrame(values, columns=columns)
   return df
 
-df_sector_margin = df_maker('sector_margin', ['Сектор', 'Маржа'])
+df_sector_margin = df_maker('sector_margin', ['sector', 'margin'])
 df_growth_rate = df_maker('growth_rate',['growth_state', 'growth_rate'])
 df_deltas_breakdown = df_maker('deltas_breakdown',['answer', 'question_score'])
 df_answer_score = df_maker('answer_score',['answer_id', 'answer', 'answer_score'])
