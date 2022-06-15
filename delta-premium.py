@@ -17,10 +17,11 @@ credentials = service_account.Credentials.from_service_account_info(st.secrets["
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
-SAMPLE_RANGE_NAME = 'sector_margin'
-
 service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
-resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
-values = resp.get('values', [])
-df = pd.DataFrame(values, columns=['Сектор', 'Маржа'])
-st.write(df)
+def df_maker(sheet, columns):
+  resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
+  values = resp.get('values', [])
+  df = pd.DataFrame(values, columns=columns)
+  return df
+
+st.write(df_maker('sector_margin', ['Сектор', 'Маржа']))
