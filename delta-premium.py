@@ -29,10 +29,10 @@ df_growth_rate = df_maker('growth_rate',['growth_state', 'growth_rate'])
 df_deltas_breakdown = df_maker('deltas_breakdown',['answer', 'question_score'])
 df_answer_score = df_maker('answer_score',['answer_id', 'answer', 'answer_score'])
 
-st.write(df_sector_margin.info)
-st.write(df_growth_rate.info)
-st.write(df_deltas_breakdown.info)
-st.write(df_answer_score.info)
+st.write(df_sector_margin.info())
+st.write(df_growth_rate.info())
+st.write(df_deltas_breakdown.info())
+st.write(df_answer_score.info())
 
 df_growth_rate.set_index('growth_state', inplace=True)
 df_sector_margin.set_index('sector', inplace=True)
@@ -162,28 +162,3 @@ if revenue != 0:
         fig_1.update_xaxes(categoryorder='total descending')
         st.plotly_chart(fig_1, use_container_width=True, sharing="streamlit")
         st.dataframe(lost_total.drop('Аспект', axis='columns').sort_values("Оценка", ascending=False))
-
-#        if len(lost_oper) != 0:
-#            fig_2 = px.bar(lost_oper, y=0, x=lost_oper.index)
-#            fig_2.update_layout(title = "Разбивка операционной дельты", yaxis_title=f"{val} упущенной прибыли", xaxis_title="Операционные факторы Kaizen")
-#            st.plotly_chart(fig_2, use_container_width=True, sharing="streamlit")
-#
-#        if len(lost_growth) != 0:
-#            fig_3 = px.bar(lost_growth, y=0, x=lost_growth.index)
-#            fig_3.update_layout(title = "Разбивка дельты роста", yaxis_title=f"{val} упущенной прибыли", xaxis_title="Факторы Роста Kaizen")
-#            st.plotly_chart(fig_3, use_container_width=True, sharing="streamlit")
-#        if len(lost_oper.append(lost_growth)) != 0:
-#            lost_oper_fin = pd.DataFrame(lost_oper)
-#            lost_oper_fin['o_g'] = np.repeat('Операции', len(lost_oper_fin))
-#            lost_oper_fin['Ответ'] = lost_oper_fin.index
-#            lost_oper_fin.columns = ['Оценка', 'Направление', 'Аспект']
-#
-#            lost_growth_fin = pd.DataFrame(lost_growth)
-#            lost_growth_fin['o_g'] = np.repeat('Рост', len(lost_growth_fin))
-#            lost_growth_fin['Ответ'] = lost_growth_fin.index
-#            lost_growth_fin.columns = ['Оценка', 'Направление', 'Аспект']
-#            
-#            lost_total = lost_oper_fin.append(lost_growth_fin)
-#            fig_4 = px.sunburst(lost_total, path=['Направление', 'Аспект'], values='Оценка', maxdepth=2)
-#            fig_4.update_layout(title = "Разбивка общей дельты")
-#            st.plotly_chart(fig_4, use_container_width=True, sharing="streamlit")
