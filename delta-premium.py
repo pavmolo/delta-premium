@@ -25,3 +25,6 @@ def df_maker(sheet, columns):
   return df
 
 st.write(df_maker('sector_margin', ['Сектор', 'Маржа']))
+st.write(df_maker('growth_rate',['growth_state', 'growth_rate']))
+st.write(df_maker('deltas_breakdown',['answer', 'question_score']))
+st.write(df_maker('answer_score',['answer_id', 'answer', 'answer_score']))
