@@ -38,7 +38,7 @@ df_sector_margin['margin'] = pd.to_numeric(df_sector_margin['margin'])
 df_growth_rate['growth_rate'] = pd.to_numeric(df_growth_rate['growth_rate'])
 df_deltas_breakdown['question_score'] = pd.to_numeric(df_deltas_breakdown['question_score'])
 df_answer_score['answer_score'] = pd.to_numeric(df_answer_score['answer_score'])
-df_answer_score['answer_id'] = pd.to_numeric(df_answer_score['answer_id'])
+#df_answer_score['answer_id'] = pd.to_numeric(df_answer_score['answer_id'])
 
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
