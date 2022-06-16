@@ -100,12 +100,12 @@ margin = st.slider("Какова ваша маржа операционной п
 growth = st.slider("Каков ваш среднегодовой рост выручки в % за последние 3 года", -20, 100, 0, 5)
 lost = lost_profit(industry, market_state, revenue, margin, growth)
 lost = pd.Series(lost).round(0)
-st.title("Результат")
 col1, col2, col3 = st.columns(3)
 proc_lost_rev = - (lost[0] / revenue * 100)
 proc_lost_1 = - (lost[1] / revenue * 100)
 proc_lost_2 = - (lost[2] / revenue * 100)
 if st.button('Посчитать прибыль'):
+  st.title("Результат")
   col1.metric("ОБЩАЯ упущенная прибыль", f'{lost[0]:.0f} {val}', f'{proc_lost_rev:.0f}% выручки')
   col2.metric("Потери прибыли в ОПЕРАЦИЯХ", f'{lost[1]:.0f} {val}', f'{proc_lost_1:.0f}% выручки')
   col3.metric("Потери прибыли в РОСТЕ", f'{lost[2]:.0f} {val}', f'{proc_lost_2:.0f}% выручки')
