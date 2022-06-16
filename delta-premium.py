@@ -105,13 +105,12 @@ col1, col2, col3 = st.columns(3)
 proc_lost_rev = - (lost[0] / revenue * 100)
 proc_lost_1 = - (lost[1] / revenue * 100)
 proc_lost_2 = - (lost[2] / revenue * 100)
-
-col1.metric("ОБЩАЯ упущенная прибыль", f'{lost[0]:.0f} {val}', f'{proc_lost_rev:.0f}% выручки')
-col2.metric("Потери прибыли в ОПЕРАЦИЯХ", f'{lost[1]:.0f} {val}', f'{proc_lost_1:.0f}% выручки')
-col3.metric("Потери прибыли в РОСТЕ", f'{lost[2]:.0f} {val}', f'{proc_lost_2:.0f}% выручки')
-# st.markdown(f'Предварительная оценка разницы в прибыли при сравнении с компаниями, реализующими Kaizen: <b>{lost[0]:.0f}</b> {val} <p> в том числе: <p>Операционная Дельта (прибыль упущенная в операционной деятельности): <b>{lost[1]:.0f}</b> {val} <p> Дельта Роста (прибыль упущенная из-за отсутствия роста): <b>{lost[2]:.0f}</b> {val}', unsafe_allow_html=True)
-if revenue != 0:
-    if st.button('Посчитать прибыль'):
+if st.button('Посчитать прибыль'):
+  col1.metric("ОБЩАЯ упущенная прибыль", f'{lost[0]:.0f} {val}', f'{proc_lost_rev:.0f}% выручки')
+  col2.metric("Потери прибыли в ОПЕРАЦИЯХ", f'{lost[1]:.0f} {val}', f'{proc_lost_1:.0f}% выручки')
+  col3.metric("Потери прибыли в РОСТЕ", f'{lost[2]:.0f} {val}', f'{proc_lost_2:.0f}% выручки')
+  # st.markdown(f'Предварительная оценка разницы в прибыли при сравнении с компаниями, реализующими Kaizen: <b>{lost[0]:.0f}</b> {val} <p> в том числе: <p>Операционная Дельта (прибыль упущенная в операционной деятельности): <b>{lost[1]:.0f}</b> {val} <p> Дельта Роста (прибыль упущенная из-за отсутствия роста): <b>{lost[2]:.0f}</b> {val}', unsafe_allow_html=True)
+  if revenue != 0:
       fig = go.Figure(go.Waterfall(name="20", orientation="v", measure=["absolute", "relative", "relative"],
                                    x=["Общая дельта", "Операционная дельта", "Дельта роста"],
                                    text=lost, y=[lost[0], -lost[1], -lost[2]],
