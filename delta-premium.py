@@ -19,24 +19,46 @@ df_growth_rate_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:
 deltas_breakdown_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_3)
 answer_score_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_4)
 
-df_sector_margin = pd.read_csv(df_sector_margin_csv)
-df_growth_rate = pd.read_csv(df_growth_rate_csv)
-df_deltas_breakdown = pd.read_csv(deltas_breakdown_csv)
-df_answer_score = pd.read_csv(answer_score_csv)
+
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+#credentials = service_account.Credentials.from_service_account_file(
+#        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=SCOPES)
+
+# The ID and range of a sample spreadsheet.
+SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
+service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
+def df_maker(sheet, columns):
+  resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
+  values = resp.get('values', [])
+  df = pd.DataFrame(values, columns=columns)
+  return df
+
+df_sector_margin = df_maker('sector_margin', ['sector', 'margin'])
+df_growth_rate = df_maker('growth_rate',['growth_state', 'growth_rate'])
+df_deltas_breakdown = df_maker('deltas_breakdown',['answer', 'question_score'])
+df_answer_score = df_maker('answer_score',['answer_id', 'answer', 'answer_score'])
+
+df_growth_rate.set_index('growth_state', inplace=True)
+df_sector_margin.set_index('sector', inplace=True)
+df_deltas_breakdown.set_index('answer', inplace=True)
+df_answer_score.set_index('answer_id', inplace=True)
+
+df_sector_margin['margin'] = pd.to_numeric(df_sector_margin['margin'])
+df_growth_rate['growth_rate'] = pd.to_numeric(df_growth_rate['growth_rate'])
+df_deltas_breakdown['question_score'] = pd.to_numeric(df_deltas_breakdown['question_score'])
+df_answer_score['answer_score'] = pd.to_numeric(df_answer_score['answer_score'])
+#df_answer_score['answer_id'] = pd.to_numeric(df_answer_score['answer_id'])
 
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
 df_deltas_breakdown = pd.Series(df_deltas_breakdown['question_score'])
-
 gro_state_list = df_growth_rate.index
 industry_list = df_sector_margin.index
 answers_list = df_answer_score['answer']
-
-
-
 operation_breakdown_elems = 11
 groth_breakdown_elems = 6
-
 def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
     table = pd.Series(table['answer_score'])
@@ -45,7 +67,6 @@ def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
     prom_list = arg_list * df_deltas_breakdown.head(operation_breakdown_elems)
     sum_prom = prom_list.sum()
     return pd.Series(prom_list / sum_prom)
-
 def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
     table = pd.Series(table['answer_score'])
@@ -68,7 +89,6 @@ def show_predict_page():
   else:
       val = 'тыс$'
   st.subheader('Нам необходима информация, чтобы спрогнозировать ваши показатели прибыли')
-
   industry = st.radio("Ваша отрасль:", industry_list)
   market_state = st.radio("Охарактеризуйте состояние сектора, в котором вы работаете:", gro_state_list)
   revenue = st.number_input(f"Какова ваша выручка, {val} в год:", value=0)
@@ -124,22 +144,18 @@ def show_predict_page():
         anw_14 = st.radio(df_deltas_breakdown.index[14], answers_list, index=0)
         anw_15 = st.radio(df_deltas_breakdown.index[15], answers_list, index=0)
         anw_16 = st.radio(df_deltas_breakdown.index[16], answers_list, index=0)    
-
         lost_oper_full = break_down(anw_0, anw_1, anw_2, anw_3, anw_4, anw_5, anw_6, anw_7, anw_8, anw_9, anw_10) * lost[1]
         lost_growth_full = break_down_g(anw_11, anw_12, anw_13, anw_14, anw_15, anw_16) * lost[2]
         lost_oper = lost_oper_full[lost_oper_full > 0]
         lost_growth = lost_growth_full[lost_growth_full > 0]
-
         lost_oper_fin = pd.DataFrame(lost_oper)
         lost_oper_fin['o_g'] = np.repeat('Операции', len(lost_oper_fin))
         lost_oper_fin['Ответ'] = lost_oper_fin.index
         lost_oper_fin.columns = ['Оценка', 'Направление', 'Аспект']
-
         lost_growth_fin = pd.DataFrame(lost_growth)
         lost_growth_fin['o_g'] = np.repeat('Рост', len(lost_growth_fin))
         lost_growth_fin['Ответ'] = lost_growth_fin.index
         lost_growth_fin.columns = ['Оценка', 'Направление', 'Аспект']
-
         lost_total = pd.concat([lost_oper_fin, lost_growth_fin])
         lost_total = lost_total.sort_values("Оценка", ascending=False)        
         if len(lost_oper) != 0:
