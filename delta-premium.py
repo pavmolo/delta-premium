@@ -48,16 +48,7 @@ gro_state_list = df_growth_rate.index
 industry_list = df_sector_margin.index
 answers_list = df_answer_score['answer']
 
-# Функция прибыли
-def lost_profit(ind, mar, rev, marg, gro):
-    growth_rate = df_growth_rate[mar]
-    margin_ind_rate = df_sector_margin[ind]
-    potencial_profit = rev * (margin_ind_rate)
-    act_profit = (marg / 100) * rev
-    profit_delta_qdc = max(potencial_profit - act_profit, 0.05 * act_profit)
-    profit_delta_growth = max(((growth_rate - (gro / 100)) * rev * margin_ind_rate), 0.005 * rev)
-    profit_delta_total = profit_delta_qdc + profit_delta_growth
-    return [profit_delta_total, profit_delta_qdc, profit_delta_growth]
+
 
 operation_breakdown_elems = 11
 groth_breakdown_elems = 6
@@ -101,6 +92,16 @@ def show_predict_page():
   growth = st.slider("Каков ваш среднегодовой рост выручки в % за последние 3 года", -20, 100, 0, 5)
   if st.button('Посчитать прибыль'):
     st.title("Результат")
+    # Функция прибыли
+    def lost_profit(ind, mar, rev, marg, gro):
+      growth_rate = df_growth_rate[mar]
+      margin_ind_rate = df_sector_margin[ind]
+      potencial_profit = rev * (margin_ind_rate)
+      act_profit = (marg / 100) * rev
+      profit_delta_qdc = max(potencial_profit - act_profit, 0.05 * act_profit)
+      profit_delta_growth = max(((growth_rate - (gro / 100)) * rev * margin_ind_rate), 0.005 * rev)
+      profit_delta_total = profit_delta_qdc + profit_delta_growth
+      return [profit_delta_total, profit_delta_qdc, profit_delta_growth]
     lost = lost_profit(industry, market_state, revenue, margin, growth)
     lost = pd.Series(lost).round(0)
     col1, col2, col3 = st.columns(3)
