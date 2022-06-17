@@ -19,7 +19,10 @@ df_growth_rate_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:
 deltas_breakdown_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_3)
 answer_score_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_4)
 
-
+df_sector_margin = pd.read_csv(df_sector_margin_csv)
+df_growth_rate = pd.read_csv(df_growth_rate_csv)
+df_deltas_breakdown = pd.read_csv(deltas_breakdown_csv)
+df_answer_score = pd.read_csv(answer_score_csv)
 
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
