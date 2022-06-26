@@ -21,18 +21,35 @@ credentials = service_account.Credentials.from_service_account_info(st.secrets["
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
 service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
-
-def df_maker(sheet, columns):
+@st.cache
+def df_maker1(sheet, columns):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
   df = pd.DataFrame(values, columns=columns)
-  time.sleep(2)
+  return df
+@st.cache
+def df_maker2(sheet, columns):
+  resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
+  values = resp.get('values', [])
+  df = pd.DataFrame(values, columns=columns)
+  return df
+@st.cache
+def df_maker3(sheet, columns):
+  resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
+  values = resp.get('values', [])
+  df = pd.DataFrame(values, columns=columns)
+  return df
+@st.cache
+def df_maker4(sheet, columns):
+  resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
+  values = resp.get('values', [])
+  df = pd.DataFrame(values, columns=columns)
   return df
 
-df_sector_margin = df_maker('sector_margin', ['sector', 'margin'])
-df_growth_rate = df_maker('growth_rate',['growth_state', 'growth_rate'])
-df_deltas_breakdown = df_maker('deltas_breakdown',['answer', 'question_score'])
-df_answer_score = df_maker('answer_score',['answer_id', 'answer', 'answer_score'])
+df_sector_margin = df_maker1('sector_margin', ['sector', 'margin'])
+df_growth_rate = df_maker2('growth_rate',['growth_state', 'growth_rate'])
+df_deltas_breakdown = df_maker3('deltas_breakdown',['answer', 'question_score'])
+df_answer_score = df_maker4('answer_score',['answer_id', 'answer', 'answer_score'])
 
 df_growth_rate.set_index('growth_state', inplace=True)
 df_sector_margin.set_index('sector', inplace=True)
