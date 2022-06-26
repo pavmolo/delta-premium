@@ -20,15 +20,15 @@ answer_score_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:cs
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-#credentials = service_account.Credentials.from_service_account_file(
-#        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=SCOPES)
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
 @st.cache
-service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
+def build_sheet():
+  build('sheets', 'v4', credentials=credentials).spreadsheets().values()
+service = build_sheet()
 @st.cache
 def df_maker(sheet, columns):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
