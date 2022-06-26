@@ -76,9 +76,20 @@ df_answer_score['answer_score'] = pd.to_numeric(df_answer_score['answer_score'])
 df_sector_margin = pd.Series(df_sector_margin['margin'])
 df_growth_rate = pd.Series(df_growth_rate['growth_rate'])
 df_deltas_breakdown = pd.Series(df_deltas_breakdown['question_score'])
-gro_state_list = df_growth_rate.index
-industry_list = df_sector_margin.index
-answers_list = df_answer_score['answer']
+
+@st.cache
+def gro_state_list(df_growth_rate):
+  return df_growth_rate.index
+@st.cache
+def industry_list(df_sector_margin):
+  return df_sector_margin.index
+@st.cache
+def answers_list(df_answer_score):
+  return df_answer_score['answer']
+
+gro_state_list = gro_state_list(gro_state_list)
+industry_list = answers_list(df_answer_score)
+answers_list = answers_list(df_answer_score)
 operation_breakdown_elems = 11
 groth_breakdown_elems = 6
 def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
