@@ -6,6 +6,7 @@ import plotly.express as px
 from datetime import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+import time
 
 gsheetid = '1S7gJojFKedjSvSRM9npIDAzN_6mkSZhgEdGpNbxXnK0'
 list_1 = 'sector_margin'
@@ -59,6 +60,7 @@ def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
                           table[a_7], table[a_8], table[a_9], table[a_10], table[a_11]], index=df_deltas_breakdown.head(operation_breakdown_elems).index)
     prom_list = arg_list * df_deltas_breakdown.head(operation_breakdown_elems)
     sum_prom = prom_list.sum()
+    time.sleep(2)
     return pd.Series(prom_list / sum_prom)
 def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
@@ -66,6 +68,7 @@ def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     arg_list = pd.Series([table[a_12], table[a_13], table[a_14], table[a_15], table[a_16], table[a_17]], index=df_deltas_breakdown.tail(groth_breakdown_elems).index)
     prom_list = arg_list * df_deltas_breakdown.tail(groth_breakdown_elems)
     sum_prom = prom_list.sum()
+    time.sleep(2)
     return pd.Series(prom_list / sum_prom)
     
     
