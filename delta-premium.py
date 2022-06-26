@@ -179,27 +179,29 @@ def show_predict_page():
       anw_13 = st.radio(df_deltas_breakdown.index[13], answers_list, index=0)
       anw_14 = st.radio(df_deltas_breakdown.index[14], answers_list, index=0)
       anw_15 = st.radio(df_deltas_breakdown.index[15], answers_list, index=0)
-      anw_16 = st.radio(df_deltas_breakdown.index[16], answers_list, index=0)    
-      lost_oper_full = break_down(anw_0, anw_1, anw_2, anw_3, anw_4, anw_5, anw_6, anw_7, anw_8, anw_9, anw_10) * lost[1]
-      lost_growth_full = break_down_g(anw_11, anw_12, anw_13, anw_14, anw_15, anw_16) * lost[2]
-      lost_oper = lost_oper_full[lost_oper_full > 0]
-      lost_growth = lost_growth_full[lost_growth_full > 0]
-      lost_oper_fin = pd.DataFrame(lost_oper)
-      lost_oper_fin['o_g'] = np.repeat('Операции', len(lost_oper_fin))
-      lost_oper_fin['Ответ'] = lost_oper_fin.index
-      lost_oper_fin.columns = ['Оценка', 'Направление', 'Аспект']
-      lost_growth_fin = pd.DataFrame(lost_growth)
-      lost_growth_fin['o_g'] = np.repeat('Рост', len(lost_growth_fin))
-      lost_growth_fin['Ответ'] = lost_growth_fin.index
-      lost_growth_fin.columns = ['Оценка', 'Направление', 'Аспект']
-      lost_total = pd.concat([lost_oper_fin, lost_growth_fin])
-      lost_total = lost_total.sort_values("Оценка", ascending=False)        
-      if len(lost_oper) != 0:
-          fig_1 = px.bar(lost_total, y='Оценка', x='Аспект', text='Оценка', color='Направление')
-          fig_1.update_traces(texttemplate='%{text:.2s}', textposition='auto')
-          fig_1.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', title = "Разбивка упущенной прибыли", yaxis_title=f"{val} упущенной прибыли", xaxis_title="Факторы Kaizen", showlegend=False)
-          fig_1.update_xaxes(categoryorder='total descending')
-          st.plotly_chart(fig_1, use_container_width=True, sharing="streamlit")
-          st.dataframe(lost_total.drop('Аспект', axis='columns').sort_values("Оценка", ascending=False))
+      anw_16 = st.radio(df_deltas_breakdown.index[16], answers_list, index=0)
+      with st.spinner('Подождите, выполняются расчеты'):
+        time.sleep(1)
+        lost_oper_full = break_down(anw_0, anw_1, anw_2, anw_3, anw_4, anw_5, anw_6, anw_7, anw_8, anw_9, anw_10) * lost[1]
+        lost_growth_full = break_down_g(anw_11, anw_12, anw_13, anw_14, anw_15, anw_16) * lost[2]
+        lost_oper = lost_oper_full[lost_oper_full > 0]
+        lost_growth = lost_growth_full[lost_growth_full > 0]
+        lost_oper_fin = pd.DataFrame(lost_oper)
+        lost_oper_fin['o_g'] = np.repeat('Операции', len(lost_oper_fin))
+        lost_oper_fin['Ответ'] = lost_oper_fin.index
+        lost_oper_fin.columns = ['Оценка', 'Направление', 'Аспект']
+        lost_growth_fin = pd.DataFrame(lost_growth)
+        lost_growth_fin['o_g'] = np.repeat('Рост', len(lost_growth_fin))
+        lost_growth_fin['Ответ'] = lost_growth_fin.index
+        lost_growth_fin.columns = ['Оценка', 'Направление', 'Аспект']
+        lost_total = pd.concat([lost_oper_fin, lost_growth_fin])
+        lost_total = lost_total.sort_values("Оценка", ascending=False)        
+        if len(lost_oper) != 0:
+            fig_1 = px.bar(lost_total, y='Оценка', x='Аспект', text='Оценка', color='Направление')
+            fig_1.update_traces(texttemplate='%{text:.2s}', textposition='auto')
+            fig_1.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', title = "Разбивка упущенной прибыли", yaxis_title=f"{val} упущенной прибыли", xaxis_title="Факторы Kaizen", showlegend=False)
+            fig_1.update_xaxes(categoryorder='total descending')
+            st.plotly_chart(fig_1, use_container_width=True, sharing="streamlit")
+            st.dataframe(lost_total.drop('Аспект', axis='columns').sort_values("Оценка", ascending=False))
 # Вызываем приложение
 show_predict_page()
