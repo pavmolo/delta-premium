@@ -46,15 +46,15 @@ def df_maker4(sheet, columns):
   df = pd.DataFrame(values, columns=columns)
   return df
 
-df_sector_margin = df_maker1('sector_margin', ['sector', 'margin'])
-df_growth_rate = df_maker2('growth_rate', ['growth_state', 'growth_rate'])
-df_deltas_breakdown = df_maker3('deltas_breakdown', ['answer', 'question_score'])
-df_answer_score = df_maker4('answer_score',['answer_id', 'answer', 'answer_score'])
+df_sector_margin_sourse = df_maker1('sector_margin', ['sector', 'margin'])
+df_growth_rate_sourse = df_maker2('growth_rate', ['growth_state', 'growth_rate'])
+df_deltas_breakdown_sourse = df_maker3('deltas_breakdown', ['answer', 'question_score'])
+df_answer_score_sourse = df_maker4('answer_score',['answer_id', 'answer', 'answer_score'])
 
-df_sector_margin.set_index('sector', inplace=True)
-df_growth_rate.set_index('growth_state', inplace=True)
-df_deltas_breakdown.set_index('answer', inplace=True)
-df_answer_score.set_index('answer_id', inplace=True)
+df_sector_margin = df_sector_margin_sourse.set_index('sector')
+df_growth_rate = df_growth_rate_sourse.set_index('growth_state')
+df_deltas_breakdown = df_deltas_breakdown_sourse.set_index('answer')
+df_answer_score = df_answer_score_sourse.set_index('answer_id')
 
 df_sector_margin['margin'] = pd.to_numeric(df_sector_margin['margin'])
 df_growth_rate['growth_rate'] = pd.to_numeric(df_growth_rate['growth_rate'])
@@ -85,7 +85,6 @@ def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     arg_list = pd.Series([table[a_12], table[a_13], table[a_14], table[a_15], table[a_16], table[a_17]], index=df_deltas_breakdown.tail(groth_breakdown_elems).index)
     prom_list = arg_list * df_deltas_breakdown.tail(groth_breakdown_elems)
     sum_prom = prom_list.sum()
-    time.sleep(2)
     return pd.Series(prom_list / sum_prom)
     
     
