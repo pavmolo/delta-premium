@@ -26,6 +26,7 @@ def df_maker(sheet, columns):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
   df = pd.DataFrame(values, columns=columns)
+  time.sleep(2)
   return df
 
 df_sector_margin = df_maker('sector_margin', ['sector', 'margin'])
