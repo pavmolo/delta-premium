@@ -100,7 +100,6 @@ def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
                           table[a_7], table[a_8], table[a_9], table[a_10], table[a_11]], index=df_deltas_breakdown.head(operation_breakdown_elems).index)
     prom_list = arg_list * df_deltas_breakdown.head(operation_breakdown_elems)
     sum_prom = prom_list.sum()
-    time.sleep(2)
     return pd.Series(prom_list / sum_prom)
 def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
