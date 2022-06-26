@@ -47,12 +47,12 @@ def df_maker4(sheet, columns):
   return df
 
 df_sector_margin = df_maker1('sector_margin', ['sector', 'margin'])
-df_growth_rate = df_maker2('growth_rate',['growth_state', 'growth_rate'])
-df_deltas_breakdown = df_maker3('deltas_breakdown',['answer', 'question_score'])
+df_growth_rate = df_maker2('growth_rate', ['growth_state', 'growth_rate'])
+df_deltas_breakdown = df_maker3('deltas_breakdown', ['answer', 'question_score'])
 df_answer_score = df_maker4('answer_score',['answer_id', 'answer', 'answer_score'])
 
-df_growth_rate.set_index('growth_state', inplace=True)
 df_sector_margin.set_index('sector', inplace=True)
+df_growth_rate.set_index('growth_state', inplace=True)
 df_deltas_breakdown.set_index('answer', inplace=True)
 df_answer_score.set_index('answer_id', inplace=True)
 
