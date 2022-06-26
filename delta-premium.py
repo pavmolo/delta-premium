@@ -87,9 +87,10 @@ def industry_list(df_sector_margin):
 def answers_list(df_answer_score):
   return df_answer_score['answer']
 
-gro_state_list = gro_state_list(gro_state_list)
-industry_list = answers_list(df_answer_score)
+gro_state_list = gro_state_list(df_growth_rate)
+industry_list = industry_list(df_sector_margin)
 answers_list = answers_list(df_answer_score)
+
 operation_breakdown_elems = 11
 groth_breakdown_elems = 6
 def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
