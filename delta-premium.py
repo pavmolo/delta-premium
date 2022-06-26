@@ -27,7 +27,9 @@ credentials = service_account.Credentials.from_service_account_info(st.secrets["
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
+@st.cache
 service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
+@st.cache
 def df_maker(sheet, columns):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
@@ -59,6 +61,7 @@ industry_list = df_sector_margin.index
 answers_list = df_answer_score['answer']
 operation_breakdown_elems = 11
 groth_breakdown_elems = 6
+@st.cache
 def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
     table = pd.Series(table['answer_score'])
@@ -67,6 +70,7 @@ def break_down(a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11):
     prom_list = arg_list * df_deltas_breakdown.head(operation_breakdown_elems)
     sum_prom = prom_list.sum()
     return pd.Series(prom_list / sum_prom)
+@st.cache
 def break_down_g(a_12, a_13, a_14, a_15, a_16, a_17):
     table = df_answer_score[['answer', 'answer_score']].set_index('answer')
     table = pd.Series(table['answer_score'])
