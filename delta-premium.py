@@ -13,12 +13,6 @@ list_2 = 'growth_rate'
 list_3 = 'deltas_breakdown'
 list_4 = 'answer_score'
 
-df_sector_margin_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_1)
-df_growth_rate_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_2)
-deltas_breakdown_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_3)
-answer_score_csv = "https://docs.google.com/spreadsheets/d/{}/gviz/tq?tqx=out:csv&sheet={}".format(gsheetid, list_4)
-
-
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=SCOPES)
@@ -26,12 +20,12 @@ credentials = service_account.Credentials.from_service_account_info(st.secrets["
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
 service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
+
 @st.cache(allow_output_mutation=True)
 def df_maker(sheet, columns):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
   df = pd.DataFrame(values, columns=columns)
-  df = df.copy(deep=False)
   return df
 
 df_sector_margin = df_maker('sector_margin', ['sector', 'margin'])
