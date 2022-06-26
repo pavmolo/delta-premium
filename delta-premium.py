@@ -22,34 +22,45 @@ credentials = service_account.Credentials.from_service_account_info(st.secrets["
 SAMPLE_SPREADSHEET_ID = '1etUSlGdjQruAn5AjPCat2R-k9LhXnapnXm4szTZJ3Pg'
 service = build('sheets', 'v4', credentials=credentials).spreadsheets().values()
 @st.cache
-def df_maker1(sheet, columns):
+def df_maker1(sheet):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
-  df = pd.DataFrame(values, columns=columns)
+  df = pd.DataFrame(values)
   return df
 @st.cache
-def df_maker2(sheet, columns):
+def df_maker2(sheet):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
-  df = pd.DataFrame(values, columns=columns)
+  df = pd.DataFrame(values)
   return df
 @st.cache
-def df_maker3(sheet, columns):
+def df_maker3(sheet):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
-  df = pd.DataFrame(values, columns=columns)
+  df = pd.DataFrame(values)
   return df
 @st.cache
-def df_maker4(sheet, columns):
+def df_maker4(sheet):
   resp = service.get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=sheet).execute()
   values = resp.get('values', [])
-  df = pd.DataFrame(values, columns=columns)
+  df = pd.DataFrame(values)
   return df
 
-df_sector_margin_sourse = df_maker1('sector_margin', ['sector', 'margin'])
-df_growth_rate_sourse = df_maker2('growth_rate', ['growth_state', 'growth_rate'])
-df_deltas_breakdown_sourse = df_maker3('deltas_breakdown', ['answer', 'question_score'])
-df_answer_score_sourse = df_maker4('answer_score',['answer_id', 'answer', 'answer_score'])
+df_sector_margin_sourse = df_maker1('sector_margin')
+df_sector_margin = df_sector_margin_sourse.copy(deep=True)
+df_sector_margin.columns = ['sector', 'margin']
+
+df_growth_rate_sourse = df_maker1('growth_rate')
+df_growth_rate = df_growth_rate_sourse.copy(deep=True)
+df_growth_rate.columns = ['growth_state', 'growth_rate']
+
+df_deltas_breakdown_sourse = df_maker1('deltas_breakdown')
+df_deltas_breakdown = df_deltas_breakdown_sourse.copy(deep=True)
+df_deltas_breakdown.columns = ['answer', 'question_score']
+
+df_answer_score_sourse = df_maker1('answer_score')
+df_answer_score = df_answer_score_sourse.copy(deep=True)
+df_answer_score.columns = ['answer_id', 'answer', 'answer_score']
 
 df_sector_margin = df_sector_margin_sourse.set_index('sector')
 df_growth_rate = df_growth_rate_sourse.set_index('growth_state')
