@@ -62,7 +62,7 @@ df_answer_score_sourse = df_maker1('answer_score')
 df_answer_score = df_answer_score_sourse.copy(deep=True)
 df_answer_score.columns = ['answer_id', 'answer', 'answer_score']
 
-df_sector_margine.set_index('sector', inplace=True)
+df_sector_margin.set_index('sector', inplace=True)
 df_growth_rate.set_index('growth_state', inplace=True)
 df_deltas_breakdown.set_index('answer', inplace=True)
 df_answer_score.set_index('answer_id', inplace=True)
